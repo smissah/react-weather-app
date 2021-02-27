@@ -1,25 +1,24 @@
-import logo from './logo.svg';
-import './App.css';
-
-function App() {
+import React, { useState } from "react";
+import { AiOutlineSearch } from "react-icons/ai";
+const App = () => {
+  const api = {
+    key: "aa99db8241a48403ffc00d0820738cc6",
+    base: "https://api.openweathermap.org/data/2.5",
+  };
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="app warm">
+      <main>
+        <div className="app__search">
+          <AiOutlineSearch className="app__searchIcon" />
+          <input
+            type="text"
+            className="app__searchInput"
+            placeholder="search..."
+          />
+        </div>
+      </main>
     </div>
   );
-}
+};
 
 export default App;
