@@ -8,9 +8,11 @@ import {
   FaSun,
 } from "react-icons/fa";
 const api = {
-  key: "832ad672ded8584a1307da1ea0272d1c",
+  key: `${process.env.REACT_APP_WEATHER_KEY}`,
   base: "https://api.openweathermap.org/data/2.5/",
 };
+
+console.log(process.env);
 
 const App = () => {
   const [query, setQuery] = useState("");
