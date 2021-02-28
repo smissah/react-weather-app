@@ -1,13 +1,14 @@
 import React, { useState } from "react";
 import { AiOutlineSearch } from "react-icons/ai";
 import { FaCloudSunRain } from "react-icons/fa";
+const api = {
+  key: "832ad672ded8584a1307da1ea0272d1c",
+  base: "https://api.openweathermap.org/data/2.5/",
+};
+
 const App = () => {
   const [query, setQuery] = useState("");
   const [weather, setWeather] = useState({});
-  const api = {
-    key: "aa99db8241a48403ffc00d0820738cc6",
-    base: "https://api.openweathermap.org/data/2.5",
-  };
 
   const dateBuilder = (d) => {
     let months = [
@@ -32,12 +33,35 @@ const App = () => {
     let year = d.getFullYear();
     return ` ${day} ${date} ${month} ${year}`;
   };
+
+  const search = (evt) => {
+    if (evt.key === "Enter") {
+      fetch(`${api.base}weather?q=${query}&units=metric&APPID=${api.key}`)
+        .then((res) => res.json())
+        .then((result) => {
+          setWeather(result);
+          setQuery("");
+          console.log(result);
+        });
+    }
+  };
+
+  // const getWeather = () => {
+  //   const result = fetch(
+  //     `${api.base}weather?q=${query}&units=metric&APPID=${api.key}`
+  //   );
+  //   const data = result.json();
+  //   console.log(data);
+  // };
+
+  // getWeather();
   return (
     <div className="app ">
       <main>
         <div className="app__search">
           <AiOutlineSearch className="app__searchIcon" />
           <input
+            onKeyPress={search}
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             type="text"
@@ -46,7 +70,7 @@ const App = () => {
           />
         </div>
         <div className="output">
-          <div className="output__location">London, UK</div>
+          <div className="output__location">{query}</div>
           <div className="output__date">{dateBuilder(new Date())}</div>
         </div>
         <div className="weather">
