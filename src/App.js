@@ -1,6 +1,12 @@
 import React, { useState } from "react";
+import { MdDehaze } from "react-icons/md";
 import { AiOutlineSearch } from "react-icons/ai";
-import { FaCloudSunRain } from "react-icons/fa";
+import {
+  FaCloudSunRain,
+  FaCloud,
+  FaCloudShowersHeavy,
+  FaSun,
+} from "react-icons/fa";
 const api = {
   key: "832ad672ded8584a1307da1ea0272d1c",
   base: "https://api.openweathermap.org/data/2.5/",
@@ -8,7 +14,7 @@ const api = {
 
 const App = () => {
   const [query, setQuery] = useState("");
-  const [weather, setWeather] = useState({});
+  const [weather, setWeather] = useState(false);
 
   const dateBuilder = (d) => {
     let months = [
@@ -46,17 +52,37 @@ const App = () => {
     }
   };
 
-  // const getWeather = () => {
-  //   const result = fetch(
-  //     `${api.base}weather?q=${query}&units=metric&APPID=${api.key}`
-  //   );
-  //   const data = result.json();
-  //   console.log(data);
-  // };
+  const weatherIconSwtich = () => {
+    if (weather.weather[0].main === "Clear") {
+      return <FaSun className="weather__icon" />;
+    }
 
-  // getWeather();
+    if (weather.weather[0].main === "Clouds") {
+      return <FaCloud className="weather__icon" />;
+    }
+    if (weather.weather[0].main === "Rain") {
+      return <FaCloudShowersHeavy className="weather__icon" />;
+    }
+
+    if (weather.weather[0].main === "Haze") {
+      return <MdDehaze className="weather__icon" />;
+    }
+    if (weather.weather[0].main === "Mist") {
+      return <MdDehaze className="~~" />;
+    }
+
+    return "--";
+  };
   return (
-    <div className="app ">
+    <div
+      className={
+        typeof weather.main != "undefined"
+          ? weather.main.temp > 16
+            ? "app warm"
+            : "app"
+          : "app"
+      }
+    >
       <main>
         <div className="app__search">
           <AiOutlineSearch className="app__searchIcon" />
@@ -66,20 +92,29 @@ const App = () => {
             onChange={(e) => setQuery(e.target.value)}
             type="text"
             className="app__searchInput"
-            placeholder="search..."
+            placeholder="search... e.g London or Ghana"
           />
         </div>
-        <div className="output">
-          <div className="output__location">{query}</div>
-          <div className="output__date">{dateBuilder(new Date())}</div>
-        </div>
-        <div className="weather">
-          <div className="weather__temp">15°c</div>
-          <div className="weather__weather">
-            <div className="weather__text">Sunny</div> ||{" "}
-            <FaCloudSunRain className="weather__icon" />
-          </div>
-        </div>
+        {weather && (
+          //section only needed for conditional render
+          <section>
+            <div className="output">
+              <div className="output__location">
+                {weather.name}, {weather.sys.country || ""}
+              </div>
+              <div className="output__date">{dateBuilder(new Date())}</div>
+            </div>
+            <div className="weather">
+              <div className="weather__temp">
+                {Math.round(weather.main.temp)}°c
+              </div>
+              <div className="weather__weather">
+                <div className="weather__text">{weather.weather[0].main}</div>{" "}
+                || {weatherIconSwtich()}
+              </div>
+            </div>
+          </section>
+        )}
       </main>
     </div>
   );

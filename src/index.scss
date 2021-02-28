@@ -13,7 +13,7 @@ body {
   background-image: url("./assets/cool.jpg");
   background-size: cover;
   background-position: center;
-  transition: 0.4 ease-out;
+  transition: all 250ms ease-in-out;
 
   main {
     min-height: 100vh;
@@ -88,7 +88,7 @@ body {
     align-items: center;
     .weather__temp {
       font-size: 5.5rem;
-      letter-spacing: 0.5rem;
+
       padding-bottom: 1rem;
     }
     .weather__weather {
